@@ -7,11 +7,11 @@ import { getAnalytics } from "firebase/analytics";
 const app=firebase.initializeApp(firebaseConfig);
 const anylitics=getAnalytics(app);
 
+
 function App() {
   let dt = new Date();
   const [time,setTime] = useState(0);
   let [period,setPeriod] = useState(0);
-  let [count,setCount] = useState(0);
 
 
  
@@ -79,14 +79,26 @@ function App() {
    
 
   return (
+
+    
     <div className="bg-green-200 h-screen">
-      <header className=" bg-yellow-400 p-6 text-center rounded-xl mb-6">
-        <h1 className="text-2xl font-bold bg-yellow-200 p-2 rounded-2xl">
+
+
+
+
+
+
+      <header className="bg-yellow-400 p-3 text-center rounded-xl mb-6">
+     
+        <h1 className="text-3xl font-bold bg-yellow-200 p-3 rounded-2xl mb-3">
           Timer App
         </h1>
+        <div className="flex text-center justify-center ">
+          <h5 className="flex-initial bg-yellow-200 rounded-2xl p-2.5 font-bold" >made by Drew</h5>
+        </div>
       </header>
       <div className="items-center">
-        <div className="bg-blue-800 text-center p-5 rounded-3xl mb-5">
+        <div className="bg-blue-800 text-center p-3 rounded-3xl mb-5">
           <div className="flex justify-center p-2">
             <h1 className=" flex-initial text-3xl text-bold rounded-3xl px-5 p-3 bg-purple-300">
               Date
@@ -98,7 +110,7 @@ function App() {
         </div>
 
 
-        <div className="bg-red-800 text-center p-5 rounded-3xl mb-5" >
+        <div className="bg-red-800 text-center p-3 rounded-3xl mb-5" >
           <div className="flex justify-center p-2">
             <h1 className=" flex-initial text-3xl text-bold rounded-3xl px-5 p-3 bg-red-300" >
               Time
@@ -111,15 +123,7 @@ function App() {
 
 
 
-
-
-
-
-
-
-
-
-        <div className="bg-green-800 text-center p-5 rounded-3xl">
+        <div className="bg-green-800 text-center p-3 rounded-3xl">
           <div className="flex justify-center p-2">
             <h1 className=" flex-initial text-3xl text-bold rounded-3xl px-5 p-3 bg-green-300">
               Period
@@ -129,32 +133,25 @@ function App() {
             {period}
           </h3>
         </div>
-
-
-
-
-
-
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
-
 
 
 
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default App;
