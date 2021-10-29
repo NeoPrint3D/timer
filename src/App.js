@@ -10,7 +10,7 @@ const anylitics=getAnalytics(app);
 function App() {
   let dt = new Date();
   const [time,setTime] = useState(0);
-  let [period,setPeriod] = useState(1);
+  let [period,setPeriod] = useState(0);
   let [count,setCount] = useState(0);
 
 
@@ -24,39 +24,52 @@ function App() {
 
   useEffect(() => {
     console.log(time)
-    checktime(time)
+    checktime()
   }, [time]);
 
-  const checktime=(t)=>{
-    switch(t){
-      case "7:20:00 AM":
-        setPeriod(1);
-        break;
-      case "8:11:00 AM":
-        setPeriod(2);
-        break;
-      case "9:02:00 AM":
-        setPeriod(3);
-        break;
-      case "9:56:00 AM":
-        setPeriod(4);
-        break;
-      case "10:47:00 AM":
-        setPeriod(5);
-        break;
-      case "12:12:00 AM":
-        setPeriod(6);
-        break;
-      case "1:03:00 PM":
-        setPeriod(7);
-        break;
-      case "1:54:00 PM":
-        setPeriod(8);
-        break;
-      case "2:40:00 PM":
-        setPeriod("school is done");
-        break
+  const checktime=()=>{
+    let t=new Date();
+    let minutes=t.getMinutes();
+    if(dt.getMinutes()<10){
+      minutes="0"+minutes;
     }
+
+
+    let total=(t.getHours()+""+minutes)
+    console.log(total)
+    if(total>=720 && total<=806){
+      setPeriod(1)
+    }
+    else if(total>=806 && total<=857){
+      setPeriod(2)
+    }
+    else if(total>=902 && total<=951){
+      setPeriod(3)
+    }
+    else if(total>=956 && total<=1042){
+      setPeriod(4)
+    }
+    else if(total>=1047 && total<=1207){
+      setPeriod(5)
+    }
+    else if(total>=1212 && total<=1258){
+      setPeriod(6)
+    }
+    else if(total>=1303 && total<=1349){
+      setPeriod(7)
+    }
+    else if(total>=1354 && total<=1440){
+      setPeriod(8)
+    }
+    else if(total>=1445){
+      setPeriod("school is done")
+    }
+   
+    
+
+
+    
+    
   }
         
 
