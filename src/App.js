@@ -5,15 +5,15 @@ import firebase from "firebase/compat";
 import { getAnalytics } from "firebase/analytics";
 
 const app = firebase.initializeApp(firebaseConfig);
-const anylitics = getAnalytics(app);
+getAnalytics(app);
 
 function App() {
   let dt = new Date();
   const [time, setTime] = useState(0);
   let [period, setPeriod] = useState(0);
-  let [size, setSize] = useState(0);
-
-  const top = "flex justify-center p-2";
+  let [timeleft, setTimeleft] = useState(0);
+  const endof=[806,857,951,1042,1207,1258,1349,1440]
+  let date = `${dt.getMonth() + 1}/${dt.getDay()}/${dt.getFullYear()}`;
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -32,8 +32,11 @@ function App() {
     if (dt.getMinutes() < 10) {
       minutes = "0" + minutes;
     }
-
+    
     let total = t.getHours() + "" + minutes;
+
+
+    
     if (total >= 720 && total <= 806) {
       setPeriod(1);
     } else if (total >= 806 && total <= 857) {
@@ -53,45 +56,49 @@ function App() {
     } else {
       setPeriod("off time");
     }
+
+
+
+
+
+    if(period==0){
+      setTimeleft(endof[0]-total);
+    }
+    else{
+      setTimeleft(endof[period-1]-total);
+    }
   };
 
-const makeBigger = () => {
-  setSize(size + 10);
-  console.log(size);
-  console.log(`p-${size}`);
-};
-
-
-
-
-
-
-
   return (
-    <main className="bg-green-200 h-screen">
-      <header className="bg-yellow-400 p-3 text-center rounded-b-3xl mb-6">
-        <h1 className="text-3xl font-bold bg-yellow-200 p-3 rounded-2xl mb-3">
-          Timer App
-        </h1>
-        <div className="flex text-center justify-center ">
-          <button onclick={()=>makeBigger} className= {`flex-initial bg-yellow-200 rounded-2xl p-${size} font-bold hover:bg-red-800`}>
-            made by Drew
-          </button>
+    <main className="h-screen bg-green-200">
+      <header className="bg-yellow-600 p-3 text-center rounded-b-3xl mb-6 justify-center">
+        <div className="bg-yellow-400 p-1.5 text-center rounded-3xl justify-center">
+        <div className="flex justify-center p-2">
+          <h1 className=" text-3xl font-bold rounded-3xl px-10 p-3 bg-yellow-200  ">
+            MISD Time
+          </h1>
+        </div>
+      
+        <div className="flex justify-center p-2">
+          <h1 className="rounded-3xl px-5 p-2 bg-yellow-200 font font-light">
+            Made By Drew Ronsman
+          </h1>
+        </div>
         </div>
       </header>
-      <body>
-        <div className="flex justify-center">
-          <div className="bg-blue-800 text-center p-3 x-5 rounded-3xl mb-5 w-64 ">
-            <div className=" justify-center p-2">
-              <h1 className="text-3xl text-bold rounded-3xl px-5 p-3 bg-purple-300 font-bold">
-                Date
-              </h1>
-            </div>
-            <h3 className="text-2xl text-bold bg-indigo-200 rounded-3xl p-2 font-light ">
-              {dt.getMonth()}/{dt.getDate()}/{dt.getFullYear()}
-            </h3>
+      <body className="bg-green-200 h-screen">
+
+        <div className="bg-blue-800 text-center p-3 rounded-3xl mb-5 container mx-auto">
+          <div className="flex justify-center p-2">
+            <h1 className=" text-3xl text-bold rounded-3xl px-5 p-3 bg-blue-300 font font-bold">
+              Date
+            </h1>
           </div>
+          <h3 className="text-2xl text-bold bg-blue-200 rounded-3xl p-2 font-light">
+            {date}
+          </h3>
         </div>
+
         <div className="bg-red-800 text-center p-3 rounded-3xl mb-5 container mx-auto">
           <div className="flex justify-center p-2">
             <h1 className=" text-3xl text-bold rounded-3xl px-5 p-3 bg-red-300 font font-bold">
@@ -103,25 +110,20 @@ const makeBigger = () => {
           </h3>
         </div>
 
-        <div className="bg-green-800 text-center p-3 rounded-3xl bg-transparent">
+        <div className="bg-green-800 text-center p-3 rounded-3xl mb-5 container mx-auto">
           <div className="flex justify-center p-2">
-            <h1 className="  text-3xl text-bold rounded-3xl px-5 p-3 bg-green-300 font-bold">
+            <h1 className=" text-3xl text-bold rounded-3xl px-5 p-3 bg-green-300 font font-bold">
               Period
             </h1>
           </div>
-          <h3 className="text-2xl text-bold  bg-green-200 rounded-3xl p-2 font-light">
-            {period}
+          <h3 className="text-2xl text-bold bg-green-200 rounded-3xl p-2 font-light">
+            {period} 
           </h3>
         </div>
       </body>
     </main>
   );
 }
-
-
-
-
-
 
 
 
