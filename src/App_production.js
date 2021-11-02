@@ -11,7 +11,8 @@ function App() {
   const [time, setTime] = useState(0);
   let [period, setPeriod] = useState(0);
   let [timeleft, setTimeleft] = useState(0);
-  const endof = [806, 857, 951, 1042, 1207, 1258, 1349, 1440];
+  const endof = [486, 537, 591, 642, 727, 778, 829, 880];
+
   let date = `${dt.getMonth() + 1}/${dt.getDay()}/${dt.getFullYear()}`;
 
   useEffect(() => {
@@ -32,7 +33,6 @@ function App() {
       dt.getHours() +
       "" +
       (dt.getMinutes() < 10 ? "0" + dt.getMinutes() : dt.getMinutes());
-    console.log(total);
     if (total >= 720 && total <= 1440) {
       if (total >= 720 && total <= 806) {
         setPeriod(1);
@@ -55,11 +55,12 @@ function App() {
       }
     }
     //time left
+    //console.log(((dt.getHours()*60)+dt.getMinutes()));
     if (total >= 720 && total <= 1440) {
       if (period === 0) {
-        setTimeleft(`${endof[0] - total} min`);
+        setTimeleft(`${endof[0] - ((dt.getHours()*60)+dt.getMinutes())} min`);
       } else if (period !== "In between bells") {
-        setTimeleft(`${endof[period - 1] - total} min`);
+        setTimeleft(`${endof[period - 1] - ((dt.getHours()*60)+dt.getMinutes())} min`);
       } else {
         setTimeleft("You made it on timer");
       }
