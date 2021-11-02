@@ -54,6 +54,9 @@ function App() {
         setPeriod("In between bells");
       }
     }
+    else{
+      setPeriod("School is out");
+    }
     //time left
     //console.log(((dt.getHours()*60)+dt.getMinutes()));
     if (total >= 720 && total <= 1440) {
@@ -65,6 +68,10 @@ function App() {
         setTimeleft("You made it on timer");
       }
     }
+    else{
+      setTimeleft("No School Left");
+    }
+
   };
 
   return (
