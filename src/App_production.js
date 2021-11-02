@@ -11,7 +11,7 @@ function App() {
   const [time, setTime] = useState(0);
   let [period, setPeriod] = useState(0);
   let [timeleft, setTimeleft] = useState(0);
-  const endof = [486, 537, 591, 642, 727, 778, 829, 880];
+  const endMin = [486, 537, 591, 642, 727, 778, 829, 880];
 
   let date = `${dt.getMonth() + 1}/${dt.getDay()}/${dt.getFullYear()}`;
 
@@ -57,13 +57,12 @@ function App() {
     else{
       setPeriod("School is out");
     }
-    //time left
-    //console.log(((dt.getHours()*60)+dt.getMinutes()));
+    //time lefty
     if (total >= 720 && total <= 1440) {
       if (period === 0) {
-        setTimeleft(`${endof[0] - ((dt.getHours()*60)+dt.getMinutes())} min`);
+        setTimeleft(`${endMin[0] - ((dt.getHours()*60)+dt.getMinutes())} min`);
       } else if (period !== "In between bells") {
-        setTimeleft(`${endof[period - 1] - ((dt.getHours()*60)+dt.getMinutes())} min`);
+        setTimeleft(`${endMin[period - 1] - ((dt.getHours()*60)+dt.getMinutes())} min`);
       } else {
         setTimeleft("You made it on timer");
       }
