@@ -64,7 +64,7 @@ function App() {
       } else if (period !== "In between bells") {
         setTimeleft(`${endMin[period - 1] - ((dt.getHours()*60)+dt.getMinutes())} min`);
       } else {
-        setTimeleft("You made it on timer");
+        setTimeleft("You made it on time");
       }
     }
     else{
