@@ -36,7 +36,7 @@ function App() {
     if (total >= 720 && total <= 1440) {
       if (total >= 720 && total <= 806) {
         setPeriod(1);
-      } else if (total >= 806 && total <= 857) {
+      } else if (total >= 811 && total <= 857) {
         setPeriod(2);
       } else if (total >= 902 && total <= 951) {
         setPeriod(3);
