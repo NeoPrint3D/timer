@@ -9,12 +9,20 @@ getAnalytics(app);
 function App() {
   let dt = new Date(); //example time 'December 17, 1995 09:52:00'
   const [time, setTime] = useState(0);
+  const [apiData, setApiData] = useState({});
+
   let [period, setPeriod] = useState(0);
   let [timeleft, setTimeleft] = useState(0);
   const endMin = [486, 537, 591, 642, 727, 778, 829, 880];
+  const apiKey = process.env.REACT_APP_W_API_KEY;
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Montgomery,Texas&units=imperial&appid=${apiKey}`;
 
   let date = `${dt.getMonth() + 1}/${dt.getDay()}/${dt.getFullYear()}`;
-
+  useEffect(() => {
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => setApiData(data));
+  }, [apiUrl]);
   useEffect(() => {
     let interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
@@ -53,24 +61,25 @@ function App() {
       } else {
         setPeriod("In between bells");
       }
-    }
-    else{
+    } else {
       setPeriod("School is out");
     }
     //time lefty
     if (total >= 720 && total <= 1440) {
       if (period === 0) {
-        setTimeleft(`${endMin[0] - ((dt.getHours()*60)+dt.getMinutes())} min`);
+        setTimeleft(
+          `${endMin[0] - (dt.getHours() * 60 + dt.getMinutes())} min`
+        );
       } else if (period !== "In between bells") {
-        setTimeleft(`${endMin[period - 1] - ((dt.getHours()*60)+dt.getMinutes())} min`);
+        setTimeleft(
+          `${endMin[period - 1] - (dt.getHours() * 60 + dt.getMinutes())} min`
+        );
       } else {
         setTimeleft("You made it on time");
       }
-    }
-    else{
+    } else {
       setTimeleft("No School Left");
     }
-
   };
 
   return (
@@ -93,32 +102,51 @@ function App() {
       </header>
 
       <div>
-
         <div className="justify-evenly flex">
-
-        <div className={`p-3 lg:p-5 bg-red-800 rounded-3xl mb-5`}>
-      <div
-        className={`bg-red-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
-      >
-        <div className="flex justify-center p-2">
-          <div className={`bg-red-100 p-1 rounded-2xl`}>
-            <h1
-              className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-red-300 font font-bold`}
+          <div className={`p-3 lg:p-5 bg-red-800 rounded-3xl mb-5`}>
+            <div
+              className={`bg-red-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
             >
-              Date 
-            </h1>
+              <div className="flex justify-center p-2">
+                <div className={`bg-red-100 p-1 rounded-2xl`}>
+                  <h1
+                    className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-red-300 font font-bold`}
+                  >
+                    Date
+                  </h1>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <h3
+                  className={`text-xl text-bold bg-red-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
+                >
+                  {date}
+                </h3>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <h3
-            className={`text-xl text-bold bg-red-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
-          >
-            {date}
-          </h3>
-        </div>
-      </div>
-    </div>
-
+          <div className={`p-3 lg:p-5 bg-green-800 rounded-3xl mb-5`}>
+            <div
+              className={`bg-green-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
+            >
+              <div className="flex justify-center p-2">
+                <div className={`bg-green-100 p-1 rounded-2xl`}>
+                  <h1
+                    className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-green-300 font font-bold`}
+                  >
+                    Period
+                  </h1>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <h3
+                  className={`text-xl text-bold bg-green-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
+                >
+                  {period}
+                </h3>
+              </div>
+            </div>
+          </div>
           <div className={`p-3 lg:p-5 bg-blue-800 rounded-3xl mb-5`}>
             <div
               className={`bg-blue-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
@@ -128,7 +156,7 @@ function App() {
                   <h1
                     className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-blue-300 font font-bold`}
                   >
-                  Time
+                    Time
                   </h1>
                 </div>
               </div>
@@ -141,63 +169,60 @@ function App() {
               </div>
             </div>
           </div>
-
-      
         </div>
 
         <div className="justify-evenly flex">
-
-        <div className={`p-3 lg:p-5 bg-green-800 rounded-3xl mb-5`}>
-      <div
-        className={`bg-green-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
-      >
-        <div className="flex justify-center p-2">
-          <div className={`bg-green-100 p-1 rounded-2xl`}>
-            <h1
-              className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-green-300 font font-bold`}
+          <div className={`p-3 lg:p-5 bg-purple-800 rounded-3xl mb-5`}>
+            <div
+              className={`bg-purple-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
             >
-              Period
-            </h1>
+              <div className="flex justify-center p-2">
+                <div className={`bg-purple-100 p-1 rounded-2xl`}>
+                  <h1
+                    className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-purple-300 font font-bold`}
+                  >
+                    Time Left
+                  </h1>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <h3
+                  className={`text-xl text-bold bg-purple-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
+                >
+                  {timeleft}
+                </h3>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center">
-          <h3
-            className={`text-xl text-bold bg-green-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
-          >
-            {period}
-          </h3>
-        </div>
-      </div>
-        </div>
-
-        <div className={`p-3 lg:p-5 bg-purple-800 rounded-3xl mb-5`}>
-        <div
-        className={`bg-purple-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
+          <div className={`p-3 lg:p-5 bg-pink-800 rounded-3xl mb-5`}>
+<div
+  className={`bg-pink-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
+>
+  <div className="flex justify-center p-2">
+    <div className={`bg-pink-100 p-1 rounded-2xl`}>
+      <h1
+        className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-pink-300 font font-bold`}
       >
-        <div className="flex justify-center p-2">
-          <div className={`bg-purple-100 p-1 rounded-2xl`}>
-            <h1
-              className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-purple-300 font font-bold`}
-            >
-              Time Left
-            </h1>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <h3
-            className={`text-xl text-bold bg-purple-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
-          >
-            {timeleft}
-          </h3>
-        </div>
-      </div>
+        Weather
+      </h1>
     </div>
+  </div>
+  <div className="flex justify-center">
+    <h3
+      className={`text-xl text-bold bg-pink-200 rounded-3xl lg:px-10 p-3 px-4 font-light`}
+    >
+      {
+              apiData.main ? `${Math.round(apiData.main.temp)} °F` : "loading"
+            }
+    </h3>
+  </div>
+</div>
+</div>
+      
         </div>
       </div>
     </div>
   );
 }
-
-
 
 export default App;
