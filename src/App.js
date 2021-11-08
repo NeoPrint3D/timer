@@ -2,21 +2,23 @@ import { useState, useEffect } from "react";
 import firebaseConfig from "./config";
 import firebase from "firebase/compat/app";
 import { getAnalytics } from "firebase/analytics";
-
+import InfoCard from "./components/InfoCards";
 const app = firebase.initializeApp(firebaseConfig);
 getAnalytics(app);
-
 function App() {
-  let dt = new Date(); //example time 'December 17, 1995 09:52:00'
+  const dt = new Date(); //example time 'December 17, 1995 09:52:00'
+  const [date, setDate] = useState(dt.toLocaleDateString());
   const [apiData, setApiData] = useState({});
   const [time, setTime] = useState("Loading...");
-  let [period, setPeriod] = useState("Loading...");
-  let [timeleft, setTimeleft] = useState("Loading...");
-  const endof = [806, 857, 951, 1042, 1207, 1258, 1349, 1440];
-  let date = `${dt.getMonth() + 1}/${dt.getDay()}/${dt.getFullYear()}`;
+  const [period, setPeriod] = useState("Loading...");
+  const [timeleft, setTimeleft] = useState("Loading...");
+  const [selectedOption, setSelectedOption] = useState("Regular");
+
+  const [endOf, setEndOf] = useState([]);
+  const [startOf, setStartOf] = useState([]);
 
   const apiKey = process.env.REACT_APP_W_API_KEY;
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Montgomery,Texas&units=imperial&appid=${apiKey}`;
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Conroe,Texas&units=imperial&appid=${apiKey}`;
 
   useEffect(() => {
     fetch(apiUrl)
@@ -24,123 +26,115 @@ function App() {
       .then((data) => setApiData(data));
   }, [apiUrl]);
   useEffect(() => {
+    setDate(dt.toLocaleDateString());
     let interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     checktime();
     // eslint-disable-next-line
   }, [time]);
+  useEffect(() => {
+    const endMin = [486, 537, 591, 642, 727, 778, 829, 880];
+    const startMin = [440, 491, 542, 596, 647, 732, 783, 834];
+    const endActMin = [481, 527, 578, 624, 709, 758, 804, 850, 880];
+    const startActMin = [440, 486, 532, 583, 629, 717, 763, 809, 850];
 
+    if (selectedOption === "Regular") {
+      setEndOf(endMin);
+      setStartOf(startMin);
+    } else if (selectedOption === "Activity") {
+      setEndOf(endActMin);
+      setStartOf(startActMin);
+    }
+  }, [selectedOption]);
   const checktime = () => {
     //gets period
-    let total =
-      dt.getHours() +
-      "" +
-      (dt.getMinutes() < 10 ? "0" + dt.getMinutes() : dt.getMinutes());
-    console.log(total);
-    if (total >= 720 && total <= 1440) {
-      if (total >= 720 && total <= 806) {
+
+    let total = dt.getHours() * 60 + dt.getMinutes();
+
+    if (total >= startOf[0] && total <= endOf[7]) {
+      if (total >= startOf[0] && total <= endOf[0]) {
         setPeriod(1);
-      } else if (total >= 806 && total <= 857) {
+      } else if (total >= startOf[1] && total <= endOf[1]) {
         setPeriod(2);
-      } else if (total >= 902 && total <= 951) {
+      } else if (total >= startOf[2] && total <= endOf[2]) {
         setPeriod(3);
-      } else if (total >= 956 && total <= 1042) {
+      } else if (total >= startOf[3] && total <= endOf[3]) {
         setPeriod(4);
-      } else if (total >= 1047 && total <= 1207) {
+      } else if (total >= startOf[4] && total <= endOf[4]) {
         setPeriod(5);
-      } else if (total >= 1212 && total <= 1258) {
+      } else if (total >= startOf[5] && total <= endOf[5]) {
         setPeriod(6);
-      } else if (total >= 1303 && total <= 1349) {
+      } else if (total >= startOf[6] && total <= endOf[6]) {
         setPeriod(7);
-      } else if (total >= 1354 && total <= 1440) {
+      } else if (total >= startOf[7] && total <= endOf[7]) {
         setPeriod(8);
+      } else if (startOf.length === 9 && endOf.length === 9) {
+        if (total >= startOf[8] && total <= endOf[8]) {
+          setPeriod("Activity");
+        }
       } else {
         setPeriod("In between bells");
       }
     }
     //time left
-    if (total >= 720 && total <= 1440) {
-      if (period === 0) {
-        setTimeleft(`${endof[0] - total} min`);
+    if (total >= startOf[0] && total <= endOf[7]) {
+      if (period === 1) {
+        setTimeleft(`${endOf[0] - total} min`);
       } else if (period !== "In between bells") {
-        setTimeleft(`${endof[period - 1] - total} min`);
+        setTimeleft(`${endOf[period - 1] - total} min`);
       } else {
-        setTimeleft("You made it on timer");
+        setTimeleft("You made it on time");
       }
     }
   };
-
   return (
-    <div className="bg-green-300 h-screen bg-scroll">
-      <header className="bg-yellow-600 p-3 text-center rounded-b-3xl mb-6 justify-center">
-        <div className="bg-yellow-400 p-1.5 text-center rounded-3xl justify-center">
-          <button
-            className=" text-3xl font-bold rounded-3xl px-10 p-3 bg-yellow-200 mt-3"
-            onClick={checktime}
-          >
-            MISD Time
-          </button>
-
-          <div className="flex justify-center p-2">
-            <h1 className="rounded-3xl px-5 p-2 bg-yellow-200 font font-light">
-              Made By Drew Ronsman
-            </h1>
+    <div className="bg-green-200 h-screen">
+      <header>
+        <div className={`bg-yellow-400 p-1 text-center rounded-b-3xl mb-5`}>
+          <div className={` rounded-3xl px-5 p-2 bg-yellow-200 mt-3`}>
+            <h4 className={` text-3xl font-bold`}>MISD Time</h4>
+          </div>
+          <div className={`flex justify-center p-2`}>
+            <select
+              className={`rounded-3xl px-5 p-2 bg-yellow-200 font font-light`}
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+            >
+              <option value="Regular">Regular</option>
+              <option value="Activity">Activity</option>
+            </select>
+            <h5
+              className={`rounded-3xl px-5 p-2 bg-yellow-200 font font-light mx-3`}
+            >
+              Made By Drew
+            </h5>
           </div>
         </div>
       </header>
-      <div>
-        <div className="justify-evenly flex">
-          <InfoCard color="blue" title="Date" text={date} />
-          <InfoCard color="red" title="Time" text={time} />
-          <InfoCard color="green" title="Period" text={period} />
+      <div className={`items-center`}>
+        <div className={`justify-evenly flex place-items-center`}>
+          <InfoCard color={`blue`} title={`Date`} text={`${date}`} />
+          <InfoCard color={`red`} title={`Time`} text={time} />
+          <InfoCard color={`green`} title={`Period`} text={period} />
         </div>
-        <div className="justify-evenly flex">
+        <div className={`justify-evenly flex place-items-center gri`}>
           <InfoCard
-            color="purple"
-            title="Weather"
+            color={`purple`}
+            title={`Weather`}
             text={
-              apiData.main ? `${Math.round(apiData.main.temp)} °F` : "loading"
+              apiData.main ? `${Math.round(apiData.main.temp)} °F` : `loading`
             }
-            image={apiData.weather ? (`http://openweathermap.org/img/w/${apiData.weather[0].icon}.png`):(0)} 
+            image={
+              apiData.weather
+                ? `http://openweathermap.org/img/w/${apiData.weather[0].icon}.png`
+                : 0
+            }
           />
-
-          <InfoCard color="pink" title="Time Left" text={timeleft} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function InfoCard(props) {
-  const { color, title, text,image } = props;
-  return (
-    <div className={`p-3 lg:p-5 bg-${color}-800 rounded-3xl mb-5`}>
-      <div
-        className={`bg-${color}-600 text-center p-3 lg:p-5 rounded-2xl  mx-auto`}
-      >
-        <div className="flex justify-center p-2">
-          <div className={`bg-${color}-100 p-1 rounded-2xl`}>
-            <h1
-              className={`text-2xl text-bold rounded-2xl  px-10 lg:px-24 p-2 bg-${color}-300 font font-bold`}
-            >
-              {title}
-            </h1>
-          </div>
-        </div>
-        <div className="flex justify-evenly">
-          <div className="flex place-items-center">
-          <h3
-            className={`text-xl text-bold bg-${props.color}-200 rounded-3xl lg:px-10 p-3 px-4 font-light text-justify`}
-          >
-            {text}
-          </h3>
-          </div>
-          {image ? (<img className={`bg-${props.color}-300 p- rounded-full`} src={image} alt=""></img>):(<></>)}
+          <InfoCard color={`pink`} title={`Ends in`} text={timeleft} />
         </div>
       </div>
     </div>
