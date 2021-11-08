@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import firebaseConfig from "./config";
 import firebase from "firebase/compat/app";
 import { getAnalytics } from "firebase/analytics";
-import InfoCard from "./components/InfoCards";
+// import InfoCard from "./components/InfoCards";
 const app = firebase.initializeApp(firebaseConfig);
 getAnalytics(app);
 function App() {
-  const dt = new Date(); //example time 'December 17, 1995 09:52:00'
-  const [date, setDate] = useState(dt.toLocaleDateString());
+   //example time 'December 17, 1995 09:52:00'
+  const [date, setDate] = useState(new Date().toLocaleDateString());
   const [apiData, setApiData] = useState({});
   const [time, setTime] = useState("Loading...");
   const [period, setPeriod] = useState("Loading...");
@@ -26,7 +26,7 @@ function App() {
       .then((data) => setApiData(data));
   }, [apiUrl]);
   useEffect(() => {
-    setDate(dt.toLocaleDateString());
+    setDate(new Date().toLocaleDateString());
     let interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
@@ -53,7 +53,7 @@ function App() {
   const checktime = () => {
     //gets period
 
-    let total = dt.getHours() * 60 + dt.getMinutes();
+    let total = new Date().getHours() * 60 + new Date().getMinutes();
 
     if (total >= startOf[0] && total <= endOf[7]) {
       if (total >= startOf[0] && total <= endOf[0]) {
@@ -110,7 +110,7 @@ function App() {
             <h5
               className={`rounded-3xl px-5 p-2 bg-yellow-200 font font-light mx-3`}
             >
-              Made By Drew
+              Made By Drew Ronsman
             </h5>
           </div>
         </div>
@@ -140,5 +140,51 @@ function App() {
     </div>
   );
 }
+
+
+
+
+
+
+function InfoCard(props) {
+  const { color, title, text,image } = props;
+  return (
+    <div className={`p-2 lg:p-3 bg-${color}-800 rounded-3xl mb-5 place-items-center`}>
+      <div
+        className={`bg-${color}-600 text-center p-2 sm:p-3 lg:p-5 rounded-2xl  mx-auto text `}
+      >
+        <div className="flex justify-center p-2">
+          <div className={`bg-${color}-100 p-1 rounded-2xl`}>
+            <h1
+              className={`sm:text-2xl text-sm text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1  md:px-16 bg-${color}-300 font font-bold text-sm`}
+            >
+              {title}
+            </h1>
+          </div>
+        </div>
+        <div className="flex justify-evenly">
+          <div className="flex place-items-center">
+          <h3
+            className={`sm:text-xl text-xs text-bold bg-${props.color}-200 rounded-3xl lg:px-10 p-1 sm:p-3 px-3 font-light text-justify`}
+          >
+            {text}
+          </h3>
+          </div>
+          {image ? (<img className={`bg-${props.color}-300 p-0.5 rounded-full w-8 h-8 sm:w-16 sm:h-16` } src={image} alt=""></img>):(<></>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
 
 export default App;
