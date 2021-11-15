@@ -1,1 +1,1 @@
- a simple time tracker for school
+ a simple time tracker for school⏲️
