@@ -106,11 +106,11 @@ function App() {
     <div className="blue">
       <header className="border-white yellow px-2 pb-3 rounded-b-3xl text-md font-light">
         <div className="flex justify-center ">
-        <h5
-          className={`px-32 text-center text-3xl font-bold bg-white rounded-3xl p-3 mt-3 `}
-        >
-          Lake Creek
-        </h5>
+          <h5
+            className={`px-32 text-center text-3xl font-bold bg-white rounded-3xl p-3 mt-3 `}
+          >
+            Lake Creek
+          </h5>
         </div>
         <div className="flex justify-center mt-3">
           <select
@@ -121,11 +121,15 @@ function App() {
             <option value="Regular">Regular</option>
             <option value="Activity">Activity</option>
           </select>
-          <h3 className={`bg-white rounded-3xl p-2`}>Made by Drew Ronsman</h3>
         </div>
       </header>
       <div
-        style={{ backgroundImage: `url(${img})`, backgroundRepeat: "no-repeat",  backgroundPositionX:'center',backgroundSize:'350px' }}
+        style={{
+          backgroundImage: `url(${img})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPositionX: "center",
+          backgroundSize: "350px",
+        }}
         alt="lake"
         className={`h-screen `}
       >
@@ -149,7 +153,7 @@ function App() {
           <InfoCard
             title={`Quote`}
             text={`${quote.text} -${quote.author || "unknown"}`}
-            size="text-sm"
+            size="text-xs"
           />
           <InfoCard title={`Class Ends`} text={timeleft} />
         </div>
@@ -165,29 +169,29 @@ function InfoCard(props) {
     <div
       className={`yellow text-center p-2 sm:p-2 lg:p-3 rounded-2xl  mx-auto transparent  border-white`}
     >
-        <h1
-          className={`bg-white sm:text-2xl text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1 sm:p-3 mb-2 md:px-14 font font-bold text-sm `}
-        >
-          {title}
-        </h1>
+      <h1
+        className={`bg-white sm:text-2xl text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1 sm:p-3 mb-2 md:px-14 font-bold text-sm `}
+      >
+        {title}
+      </h1>
 
       <div className="flex justify-evenly place-items-center">
-          <h3
-            className={`bg-white sm:${size} text-xs  rounded-3xl lg:px-10 p-1 sm:p-3 px-3 font-light text-justify`}
-          >
-            {text}
-          </h3>
-          {image ? (
-            <img
-              className={`bg-white p-0.5 rounded-full w-8 h-8 sm:w-16 sm:h-16 ml-5`}
-              src={image}
-              alt=""
-            ></img>
-          ) : (
-            <></>
-          )}
-        </div>
+        <h3
+          className={`bg-white sm:${size} text-xs  rounded-3xl lg:px-10 p-1 sm:p-3 px-3  text-justify`}
+        >
+          {text}
+        </h3>
+        {image ? (
+          <img
+            className={`bg-white p-0.5 rounded-full w-8 h-8 sm:w-16 sm:h-16 `}
+            src={image}
+            alt=""
+          ></img>
+        ) : (
+          <></>
+        )}
       </div>
+    </div>
   );
 }
 
