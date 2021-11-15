@@ -104,15 +104,17 @@ function App() {
   };
   return (
     <div className="blue">
-      <header className="border-white yellow px-2 pb-3 rounded-b-3xl mb-5 text-md font-light">
+      <header className="border-white yellow px-2 pb-3 rounded-b-3xl text-md font-light">
+        <div className="flex justify-center ">
         <h5
-          className={`text-center text-3xl font-bold bg-white rounded-3xl p-3 mt-3 `}
+          className={`px-32 text-center text-3xl font-bold bg-white rounded-3xl p-3 mt-3 `}
         >
           Lake Creek
         </h5>
+        </div>
         <div className="flex justify-center mt-3">
           <select
-            className={`rounded-3xl px-5 p-2 bg-white mr-3`}
+            className={`rounded-3xl p-2 bg-white mr-3`}
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.target.value)}
           >
@@ -123,12 +125,12 @@ function App() {
         </div>
       </header>
       <div
-        style={{ backgroundImage: `url${img}` }}
+        style={{ backgroundImage: `url(${img})`, backgroundRepeat: "no-repeat",  backgroundPositionX:'center',backgroundSize:'350px' }}
         alt="lake"
         className={`h-screen `}
       >
         <div
-          className={`justify-evenly grid gap-x-5 gap-y-4 grid-cols-3 place-items-center`}
+          className={`justify-evenly grid gap-x-5 gap-y-4 grid-cols-3 place-items-center mt-3`}
         >
           <InfoCard title={`Time`} text={time} />
           <InfoCard
@@ -149,7 +151,7 @@ function App() {
             text={`${quote.text} -${quote.author || "unknown"}`}
             size="text-sm"
           />
-          <InfoCard title={`Ends in`} text={timeleft} />
+          <InfoCard title={`Class Ends`} text={timeleft} />
         </div>
       </div>
     </div>
@@ -163,15 +165,13 @@ function InfoCard(props) {
     <div
       className={`yellow text-center p-2 sm:p-2 lg:p-3 rounded-2xl  mx-auto transparent  border-white`}
     >
-      <div className="flex justify-center p-2 ">
         <h1
-          className={`bg-white sm:text-2xl text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1  md:px-14 font font-bold text-sm not-transparent`}
+          className={`bg-white sm:text-2xl text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1 sm:p-3 mb-2 md:px-14 font font-bold text-sm `}
         >
           {title}
         </h1>
-      </div>
-      <div className="flex justify-evenly">
-        <div className="flex place-items-center">
+
+      <div className="flex justify-evenly place-items-center">
           <h3
             className={`bg-white sm:${size} text-xs  rounded-3xl lg:px-10 p-1 sm:p-3 px-3 font-light text-justify`}
           >
@@ -188,7 +188,6 @@ function InfoCard(props) {
           )}
         </div>
       </div>
-    </div>
   );
 }
 
