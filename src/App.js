@@ -2,17 +2,19 @@ import { useState, useEffect } from "react";
 import firebaseConfig from "./config";
 import firebase from "firebase/compat/app";
 import { getAnalytics } from "firebase/analytics";
-// import InfoCard from "./components/InfoCards";
+import "./App.css";
+import img from "./img.png";
 const app = firebase.initializeApp(firebaseConfig);
 getAnalytics(app);
 function App() {
-   //example time 'December 17, 1995 09:52:00'
+  //example time 'December 17, 1995 09:52:00'
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [apiData, setApiData] = useState({});
   const [time, setTime] = useState("Loading...");
   const [period, setPeriod] = useState("Loading...");
   const [timeleft, setTimeleft] = useState("Loading...");
   const [selectedOption, setSelectedOption] = useState("Regular");
+  const [quote, setQuote] = useState("Loading...");
 
   const [endOf, setEndOf] = useState([]);
   const [startOf, setStartOf] = useState([]);
@@ -39,6 +41,7 @@ function App() {
   useEffect(() => {
     const endMin = [486, 537, 591, 642, 727, 778, 829, 880];
     const startMin = [440, 491, 542, 596, 647, 732, 783, 834];
+
     const endActMin = [481, 527, 578, 624, 709, 758, 804, 850, 880];
     const startActMin = [440, 486, 532, 583, 629, 717, 763, 809, 850];
 
@@ -50,6 +53,14 @@ function App() {
       setStartOf(startActMin);
     }
   }, [selectedOption]);
+  useEffect(() => {
+    fetch("https://type.fit/api/quotes")
+      .then((res) => res.json())
+      .then((data) => {
+        setQuote(data[Math.floor(Math.random() * data.length)]);
+      });
+  }, []);
+
   const checktime = () => {
     //gets period
 
@@ -92,38 +103,35 @@ function App() {
     }
   };
   return (
-    <div className="bg-green-200 h-screen">
-      <header>
-        <div className={`bg-yellow-400 p-1 text-center rounded-b-3xl mb-5`}>
-          <div className={` rounded-3xl px-5 p-2 bg-yellow-200 mt-3`}>
-            <h4 className={` text-3xl font-bold`}>MISD Time</h4>
-          </div>
-          <div className={`flex justify-center p-2`}>
-            <select
-              className={`rounded-3xl px-5 p-2 bg-yellow-200 font font-light`}
-              value={selectedOption}
-              onChange={(e) => setSelectedOption(e.target.value)}
-            >
-              <option value="Regular">Regular</option>
-              <option value="Activity">Activity</option>
-            </select>
-            <h5
-              className={`rounded-3xl px-5 p-2 bg-yellow-200 font font-light mx-3`}
-            >
-              Made By Drew Ronsman
-            </h5>
-          </div>
+    <div className="blue">
+      <header className="border-white yellow px-2 pb-3 rounded-b-3xl mb-5 text-md font-light">
+        <h5
+          className={`text-center text-3xl font-bold bg-white rounded-3xl p-3 mt-3 `}
+        >
+          Lake Creek
+        </h5>
+        <div className="flex justify-center mt-3">
+          <select
+            className={`rounded-3xl px-5 p-2 bg-white mr-3`}
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+          >
+            <option value="Regular">Regular</option>
+            <option value="Activity">Activity</option>
+          </select>
+          <h3 className={`bg-white rounded-3xl p-2`}>Made by Drew Ronsman</h3>
         </div>
       </header>
-      <div className={`items-center`}>
-        <div className={`justify-evenly flex place-items-center`}>
-          <InfoCard color={`blue`} title={`Date`} text={`${date}`} />
-          <InfoCard color={`red`} title={`Time`} text={time} />
-          <InfoCard color={`green`} title={`Period`} text={period} />
-        </div>
-        <div className={`justify-evenly flex place-items-center gri`}>
+      <div
+        style={{ backgroundImage: `url${img}` }}
+        alt="lake"
+        className={`h-screen `}
+      >
+        <div
+          className={`justify-evenly grid gap-x-5 gap-y-4 grid-cols-3 place-items-center`}
+        >
+          <InfoCard title={`Time`} text={time} />
           <InfoCard
-            color={`purple`}
             title={`Weather`}
             text={
               apiData.main ? `${Math.round(apiData.main.temp)} °F` : `loading`
@@ -134,57 +142,54 @@ function App() {
                 : 0
             }
           />
-          <InfoCard color={`pink`} title={`Ends in`} text={timeleft} />
+          <InfoCard title={`Date`} text={date} />
+          <InfoCard title={`Period`} text={period} />
+          <InfoCard
+            title={`Quote`}
+            text={`${quote.text} -${quote.author || "unknown"}`}
+            size="text-sm"
+          />
+          <InfoCard title={`Ends in`} text={timeleft} />
         </div>
       </div>
     </div>
   );
 }
 
-
-
-
-
-
 function InfoCard(props) {
-  const { color, title, text,image } = props;
+  let { title, text, image, size } = props;
+  size = size || "text-xl";
   return (
-    <div className={`p-2 lg:p-3 bg-${color}-800 rounded-3xl mb-5 place-items-center`}>
-      <div
-        className={`bg-${color}-600 text-center p-2 sm:p-3 lg:p-5 rounded-2xl  mx-auto text `}
-      >
-        <div className="flex justify-center p-2">
-          <div className={`bg-${color}-100 p-1 rounded-2xl`}>
-            <h1
-              className={`sm:text-2xl text-sm text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1  md:px-16 bg-${color}-300 font font-bold text-sm`}
-            >
-              {title}
-            </h1>
-          </div>
-        </div>
-        <div className="flex justify-evenly">
-          <div className="flex place-items-center">
+    <div
+      className={`yellow text-center p-2 sm:p-2 lg:p-3 rounded-2xl  mx-auto transparent  border-white`}
+    >
+      <div className="flex justify-center p-2 ">
+        <h1
+          className={`bg-white sm:text-2xl text-bold rounded-2xl  px-3 sm:px-10 lg:px-24  p-1  md:px-14 font font-bold text-sm not-transparent`}
+        >
+          {title}
+        </h1>
+      </div>
+      <div className="flex justify-evenly">
+        <div className="flex place-items-center">
           <h3
-            className={`sm:text-xl text-xs text-bold bg-${props.color}-200 rounded-3xl lg:px-10 p-1 sm:p-3 px-3 font-light text-justify`}
+            className={`bg-white sm:${size} text-xs  rounded-3xl lg:px-10 p-1 sm:p-3 px-3 font-light text-justify`}
           >
             {text}
           </h3>
-          </div>
-          {image ? (<img className={`bg-${props.color}-300 p-0.5 rounded-full w-8 h-8 sm:w-16 sm:h-16` } src={image} alt=""></img>):(<></>)}
+          {image ? (
+            <img
+              className={`bg-white p-0.5 rounded-full w-8 h-8 sm:w-16 sm:h-16 ml-5`}
+              src={image}
+              alt=""
+            ></img>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 export default App;
